@@ -10,6 +10,8 @@
 
 Fully automated SQLi incident response pipeline built during a SOC internship at Intelcia Tech. When Wazuh detects a SQL injection attack, the workflow automatically analyzes the alert, enriches the attacker IP via VirusTotal, creates or updates a TheHive case, and documents the full playbook analysis — all in under 20 seconds with zero manual intervention.
 
+Attacks were simulated using sqlmap and manually crafted payloads against a lab environment to validate detection logic across all 12 attack patterns and all three priority tiers (P1/P2/P3).
+
 ---
 
 ## Architecture
@@ -74,6 +76,12 @@ Wazuh (SIEM) → Shuffle (SOAR) → VirusTotal → TheHive (Case Management)
 | Generic-SQLi | SELECT...FROM fallback |
 
 ---
+## MITRE ATT&CK Mapping
+
+| Technique | ID | Relevance |
+|---|---|---|
+| Exploit Public-Facing Application | T1190 | Primary technique — all 12 SQLi patterns target the web application layer |
+| Exfiltration Over Web Service | T1567 | Triggered when the "Possible Exfiltration" flag is set (large response size + successful injection verdict) |
 
 ## Priority Logic
 
@@ -152,6 +160,10 @@ When the same IP attacks again, adds a new comment to the existing case instead 
 - **Python** — Analysis and automation logic
 
 ---
+
+## Note on Infrastructure
+
+The original lab environment (GCP-hosted Wazuh and TheHive instances) has since been decommissioned. This repository documents the full architecture, detection logic, and evidence captured from the live deployment, including the Shuffle workflow export and screenshots of real case creation, enrichment, and forensic logging.
 
 ## Repository Structure
 
